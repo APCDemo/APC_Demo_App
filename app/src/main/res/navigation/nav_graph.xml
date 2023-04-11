@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/HpcFragment">
+
+    <fragment
+        android:id="@+id/HpcFragment"
+        android:name="ch.bfh.securevote.HpcFragment"
+        android:label="@string/hpc_fragment_label"
+        tools:layout="@layout/fragment_hpc">
+        <action
+            android:id="@+id/action_RegisterFragment"
+            app:destination="@id/RegisterFragment" />
+        <action
+            android:id="@+id/action_CheckKeyFragment"
+            app:destination="@id/CheckKeyFragment" />
+        <action
+            android:id="@+id/action_KeyStoreFragment"
+            app:destination="@id/KeyStoreFragment" />
+        <action
+            android:id="@+id/action_BrowserFragment"
+            app:destination="@id/BrowserFragment" />
+        <action
+            android:id="@+id/action_ApcTestFragment"
+            app:destination="@id/ApcTestFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/RegisterFragment"
+        android:name="ch.bfh.securevote.RegisterFragment"
+        android:label="@string/generate"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_HpcFragment"
+            app:destination="@id/HpcFragment" />
+        <action
+            android:id="@+id/action_CheckKeyFragment"
+            app:destination="@id/CheckKeyFragment" />
+        <action
+            android:id="@+id/action_KeyStoreFragment"
+            app:destination="@id/KeyStoreFragment" />
+        <action
+            android:id="@+id/action_BrowserFragment"
+            app:destination="@id/BrowserFragment" />
+        <action
+            android:id="@+id/action_ApcTestFragment"
+            app:destination="@id/ApcTestFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/CheckKeyFragment"
+        android:name="ch.bfh.securevote.CheckKeyFragment"
+        android:label="@string/show_cert"
+        tools:layout="@layout/fragment_check_key">
+        <action
+            android:id="@+id/action_RegisterFragment"
+            app:destination="@id/RegisterFragment" />
+        <action
+            android:id="@+id/action_HpcFragment"
+            app:destination="@id/HpcFragment" />
+        <action
+            android:id="@+id/action_CheckKeyFragment"
+            app:destination="@id/CheckKeyFragment" />
+        <action
+            android:id="@+id/action_KeyStoreFragment"
+            app:destination="@id/KeyStoreFragment" />
+        <action
+            android:id="@+id/action_BrowserFragment"
+            app:destination="@id/BrowserFragment" />
+        <action
+            android:id="@+id/action_ApcTestFragment"
+            app:destination="@id/ApcTestFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/KeyStoreFragment"
+        android:name="ch.bfh.securevote.KeyStoreFragment"
+        android:label="@string/title_key_store"
+        tools:layout="@layout/fragment_key_store">
+        <action
+            android:id="@+id/action_RegisterFragment"
+            app:destination="@id/RegisterFragment" />
+        <action
+            android:id="@+id/action_CheckKeyFragment"
+            app:destination="@id/CheckKeyFragment" />
+        <action
+            android:id="@+id/action_HpcFragment"
+            app:destination="@id/HpcFragment" />
+        <action
+            android:id="@+id/action_KeyStoreFragment"
+            app:destination="@id/KeyStoreFragment" />
+        <action
+            android:id="@+id/action_BrowserFragment"
+            app:destination="@id/BrowserFragment" />
+        <action
+            android:id="@+id/action_ApcTestFragment"
+            app:destination="@id/ApcTestFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/BrowserFragment"
+        android:name="ch.bfh.securevote.BrowserFragment"
+        android:label="@string/inspect_confirmed_message"
+        tools:layout="@layout/fragment_browser">
+        <action
+            android:id="@+id/action_RegisterFragment"
+            app:destination="@id/RegisterFragment" />
+        <action
+            android:id="@+id/action_CheckKeyFragment"
+            app:destination="@id/CheckKeyFragment" />
+        <action
+            android:id="@+id/action_HpcFragment"
+            app:destination="@id/HpcFragment" />
+        <action
+            android:id="@+id/action_KeyStoreFragment"
+            app:destination="@id/KeyStoreFragment" />
+        <action
+            android:id="@+id/action_ApcTestFragment"
+            app:destination="@id/ApcTestFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ApcTestFragment"
+        android:name="ch.bfh.securevote.ApcTestFragment"
+        android:label="@string/send_test_apc_message"
+        tools:layout="@layout/fragment_apc_test">
+        <action
+            android:id="@+id/action_RegisterFragment"
+            app:destination="@id/RegisterFragment" />
+        <action
+            android:id="@+id/action_CheckKeyFragment"
+            app:destination="@id/CheckKeyFragment" />
+        <action
+            android:id="@+id/action_HpcFragment"
+            app:destination="@id/HpcFragment" />
+        <action
+            android:id="@+id/action_KeyStoreFragment"
+            app:destination="@id/KeyStoreFragment" />
+        <action
+            android:id="@+id/action_BrowserFragment"
+            app:destination="@id/BrowserFragment" />
+        <action
+            android:id="@+id/action_ApcTestFragment"
+            app:destination="@id/ApcTestFragment" />
+    </fragment>
+
+
+</navigation>

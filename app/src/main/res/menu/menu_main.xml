@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ch.bfh.securevote.MainActivity">
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_check_key"
+        android:orderInCategory="100"
+        android:title="@string/action_check_key"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_apc_test"
+        android:orderInCategory="100"
+        android:title="@string/action_apc_test"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_check_key_store"
+        android:orderInCategory="100"
+        android:title="@string/action_check_key_store"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="100"
+        android:title="@string/about"
+        app:showAsAction="never" />
+</menu>

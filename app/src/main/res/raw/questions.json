@@ -1,0 +1,17 @@
+[
+  {
+    "question": "What do you consider as the most important use case?",
+    "type": "selection",
+    "selection": ["Transaction signing", "Qualified signatures", "e-Voting", "Authentication", "Home Control", "Car Remote Control", "None" ]
+  },
+  {
+    "question": "How do you rate the 'user experience' of the trusted confirmation?",
+    "type": "selection",
+    "selection": ["Very convenient", "OK", "Cumbersome"]
+  },
+  {
+    "question": "Would you consider using trusted confirmation for your application?",
+    "type": "binary",
+    "selection": ["Yes", "No"]
+  }
+]

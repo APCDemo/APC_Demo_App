@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="Widget.Theme.SecureVote.MyView" parent="">
+        <item name="android:background">@color/gray_600</item>
+        <item name="exampleColor">@color/bfh_orange</item>
+    </style>
+</resources>

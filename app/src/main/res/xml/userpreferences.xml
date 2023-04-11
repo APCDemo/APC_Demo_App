@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory app:title="@string/key_settings">
+        <ListPreference
+            app:key="key_type"
+            app:title="@string/select_key_type"
+            app:summary="@string/choose_between_rsa_ec"
+            app:entries="@array/key_types"
+            app:entryValues="@array/key_types"
+            app:dialogTitle="@string/key_type"
+            app:defaultValue="EC"
+            />
+        <ListPreference
+            app:key="ec_curve"
+            app:title="@string/select_ec_type"
+            app:summary="@string/choose_ec_type"
+            app:entries="@array/ec_type"
+            app:entryValues="@array/ec_type"
+            app:dialogTitle="@string/elliptic_curve_type"
+            app:defaultValue="secp256r1"
+            />
+        <ListPreference
+            app:key="rsa_key_length"
+            app:title="@string/select_rsa_key_length"
+            app:summary="@string/choose_rsa_length"
+            app:entries="@array/rsa_key_length"
+            app:entryValues="@array/rsa_key_length"
+            app:dialogTitle="@string/rsa_key_length"
+            app:defaultValue="2048"
+            />
+    </PreferenceCategory>
+    <PreferenceCategory app:title="@string/keystore_settings">
+        <CheckBoxPreference
+            app:key="strong_box_required"
+            app:title="@string/keys_in_hw"
+            app:summary="@string/choose_hw_keys"
+            app:defaultValue="true"
+            />
+        <CheckBoxPreference
+            app:key="user_authentication_required"
+            app:title="@string/user_authentication_required"
+            app:summary="@string/user_has_to_authenticate"
+            app:defaultValue="false"
+            />
+        <CheckBoxPreference
+            app:key="unlock_device_required"
+            app:title="@string/unlocked_device_required"
+            app:summary="@string/device_has_to_be_unlocked"
+            app:defaultValue="true"
+            />
+        <CheckBoxPreference
+            app:key="user_confirmation_required"
+            app:title="@string/trusted_confirmation_required"
+            app:summary="@string/keys_only_for_trusted_confirmation"
+            app:defaultValue="true"
+            />
+    </PreferenceCategory>
+    <PreferenceCategory app:title="@string/certificate_settings">
+        <ListPreference
+            app:key="cert_validity"
+            app:title="@string/cert_validity"
+            app:summary="@string/validity_period_for_cert"
+            app:entries="@array/cert_validity_options"
+            app:entryValues="@array/cert_validity_values"
+            app:dialogTitle="@string/validity_period"
+            app:defaultValue="1"
+            />
+        <EditTextPreference
+            app:key="attestation_key_alias"
+            app:title="@string/attestation_key_alisa"
+            app:dialogTitle="@string/attestation_key_alisa"
+            app:defaultValue="BFH APC Demo App"
+            />
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

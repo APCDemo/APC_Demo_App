@@ -1,0 +1,12 @@
+<resources>
+
+    <style name="Widget.Theme.SecureVote.ButtonBar.Fullscreen" parent="">
+        <item name="android:background">@color/black</item>
+        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
+    </style>
+
+    <style name="Widget.Theme.SecureVote.MyView" parent="">
+        <item name="android:background">@color/bfh_grey</item>
+        <item name="exampleColor">@color/bfh_orange</item>
+    </style>
+</resources>

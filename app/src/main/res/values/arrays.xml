@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cert_validity_options">
+        <item>1 year</item>
+        <item>2 years</item>
+        <item>3 years</item>
+        <item>5 years</item>
+        <item>10 years</item>
+    </string-array>
+    <string-array name="cert_validity_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>5</item>
+        <item>10</item>
+    </string-array>
+    <string-array name="key_types">
+        <item>EC</item>
+        <item>RSA</item>
+    </string-array>
+    <string-array name="ec_type">
+        <item>secp224r1</item>
+        <item>secp256r1</item>
+        <item>secp384r1</item>
+        <item>secp521r1</item>
+    </string-array>
+    <string-array name="rsa_key_length">
+        <item>1024</item>
+        <item>2048</item>
+        <item>4096</item>
+    </string-array>
+    <!-- Reply Preference -->
+    <string-array name="reply_entries">
+        <item>Reply</item>
+        <item>Reply to all</item>
+    </string-array>
+    <string-array name="reply_values">
+        <item>reply</item>
+        <item>reply_all</item>
+    </string-array>
+</resources>
