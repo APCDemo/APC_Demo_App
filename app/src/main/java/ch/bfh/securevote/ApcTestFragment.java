@@ -132,8 +132,12 @@ public class ApcTestFragment extends Fragment {
         });
     }
 
+    /**
+     * Present the confirmation prompt to the user.
+     *      * @param promptText Text to be displayed in the confirmation prompt
+     *      * @param view
+     */
     public void confirm(String promptText, View view) {
-
         Log.i(TAG, String.format("Prompt text is %d char long.", promptText.length()));
         String nonce = UUID.randomUUID().toString();
         //byte[] extraData = (promptText + ":" + nonce).getBytes();
@@ -149,104 +153,7 @@ public class ApcTestFragment extends Fragment {
                 .build();
 
         try {
-            confirmationPrompt.presentPrompt(getActivity().getMainExecutor(), new ConfirmationCallback() {
-                @Override
-                public void onConfirmed(byte[] dataThatWasConfirmed) {
-                    super.onConfirmed(dataThatWasConfirmed);
-                    // the signed data is a RFC 8949 Concise Binary Object Representation (CBOR) blob.
-                    CBORMapper cborMapper = new CBORMapper();
-                    try {
-                        Map mdata = cborMapper.readValue(dataThatWasConfirmed, Map.class);
-                        Log.i(TAG, mdata.toString());
-                    }catch (Exception ex){
-                        Log.e(TAG, String.format("Failed parsing confirmed data from CBOR: %s", ex));
-                    }
-                    Log.i(TAG, String.format("Confirmed Data: %s",new String(dataThatWasConfirmed)));
-                    try {
-                        Signature signature = initSignature(Constants.KEY_NAME);
-                        if (requiresAuthentication()){
-
-                            BiometricPrompt.AuthenticationCallback authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
-                                    @Override
-                                    public void onAuthenticationError(int errorCode,
-                                                                      CharSequence errString) {
-                                        notifyUser(getResources().getString(R.string.authentication_error) + errString);
-                                        super.onAuthenticationError(errorCode, errString);
-                                    }
-
-                                    @Override
-                                    public void onAuthenticationFailed() {
-                                        super.onAuthenticationFailed();
-                                    }
-
-                                    @Override
-                                    public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-                                        Log.i(TAG, "onAuthenticationSucceeded");
-                                        super.onAuthenticationSucceeded(result);
-                                        if (result.getCryptoObject() != null &&
-                                                result.getCryptoObject().getSignature() != null) {
-                                            try {
-                                                Signature signature = result.getCryptoObject().getSignature();
-                                                signature.update(dataThatWasConfirmed);
-                                                byte[] signatureBytes = signature.sign();
-                                                processSignature(view, dataThatWasConfirmed, signatureBytes);
-                                            } catch (SignatureException e) {
-                                                //throw new RuntimeException();
-                                                Log.e(TAG, String.format("Signature exception: %s", e));
-                                                Snackbar.make(view, getResources().getString(R.string.signing_failed) + e, Snackbar.LENGTH_LONG)
-                                                        .setAction(getResources().getString(R.string.error), null).show();
-                                            }
-                                        } else {
-                                            // Error
-                                            Log.e(TAG, "Failed to get result.");
-                                        }
-                                    }
-                                };
-                            BiometricPrompt mBiometricPrompt = new BiometricPrompt( requireActivity(), requireActivity().getApplicationContext().getMainExecutor(), authenticationCallback);
-
-                            // Set prompt info
-                            BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                                    .setDescription(getResources().getString(R.string.protected_confirmation))
-                                    .setTitle(getResources().getString(R.string.protected_confirmation))
-                                    .setSubtitle(getResources().getString(R.string.with_fingerprint))
-                                    .setNegativeButtonText(getResources().getString(R.string.cancel))
-                                    .build();
-                            mBiometricPrompt.authenticate(promptInfo, new BiometricPrompt.CryptoObject(signature));
-                        } else {
-                            assert signature != null;
-                            signature.update(dataThatWasConfirmed);
-                            byte[] signatureBytes = signature.sign();
-                            processSignature(view, dataThatWasConfirmed, signatureBytes);
-                        }
-                    } catch (Exception e) {
-                        Snackbar.make(view, getResources().getString(R.string.signing_failed) + e, Snackbar.LENGTH_LONG)
-                                .setAction(getResources().getString(R.string.error), null).show();
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onDismissed() {
-                    super.onDismissed();
-                    Snackbar.make(view, R.string.confirmation_dismissed, Snackbar.LENGTH_LONG)
-                            .setAction(R.string.dismissed, null).show();
-                }
-
-                @Override
-                public void onCanceled() {
-                    super.onCanceled();
-                    Snackbar.make(view, R.string.confirmation_cancelled, Snackbar.LENGTH_LONG)
-                            .setAction(R.string.cancelled, null).show();
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    super.onError(e);
-                    Log.e(TAG,"Error on Confirmation: "+e.toString());
-                    Snackbar.make(view, getResources().getString(R.string.confirmation_error) +e, Snackbar.LENGTH_LONG)
-                            .setAction(R.string.error, null).show();
-                }
-            });
+            confirmationPrompt.presentPrompt(getActivity().getMainExecutor(), createConfirmationCallback(view, extraData));
         } catch (ConfirmationAlreadyPresentingException e) {
             Log.e(TAG, "Protected confirmation already present: " + e);
             notifyUser(getResources().getString(R.string.confirmation_already_present));
@@ -273,6 +180,122 @@ public class ApcTestFragment extends Fragment {
         }
     }
 
+    /**
+     * Creates a confirmation callback with the given view and extra data
+     *
+     * @param view      the view to show the result messages
+     * @param extraData the extra data used to sign the confirmation data
+     * @return the confirmation callback
+     */
+    private ConfirmationCallback createConfirmationCallback(View view, byte[] extraData) {
+        return new ConfirmationCallback() {
+            @Override
+            public void onConfirmed(byte[] dataThatWasConfirmed) {
+                super.onConfirmed(dataThatWasConfirmed);
+                // the signed data is a RFC 8949 Concise Binary Object Representation (CBOR) blob.
+                CBORMapper cborMapper = new CBORMapper();
+                try {
+                    Map mdata = cborMapper.readValue(dataThatWasConfirmed, Map.class);
+                    Log.i(TAG, mdata.toString());
+                } catch (Exception ex) {
+                    Log.e(TAG, String.format("Failed parsing confirmed data from CBOR: %s", ex));
+                }
+                Log.i(TAG, String.format("Confirmed Data: %s", new String(dataThatWasConfirmed)));
+                try {
+                    Signature signature = initSignature(Constants.KEY_NAME);
+                    if (requiresAuthentication()) {
+                        BiometricPrompt mBiometricPrompt = new BiometricPrompt(requireActivity(), requireActivity().getApplicationContext().getMainExecutor(), createBiometricPromptAuthCallback(view, dataThatWasConfirmed));
+                        // Set prompt info
+                        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                                .setDescription(getResources().getString(R.string.protected_confirmation))
+                                .setTitle(getResources().getString(R.string.protected_confirmation))
+                                .setSubtitle(getResources().getString(R.string.with_fingerprint))
+                                .setNegativeButtonText(getResources().getString(R.string.cancel))
+                                .build();
+                        mBiometricPrompt.authenticate(promptInfo, new BiometricPrompt.CryptoObject(signature));
+                    } else {
+                        assert signature != null;
+                        signature.update(dataThatWasConfirmed);
+                        byte[] signatureBytes = signature.sign();
+                        processSignature(view, dataThatWasConfirmed, signatureBytes);
+                    }
+                } catch (Exception e) {
+                    Snackbar.make(view, getResources().getString(R.string.signing_failed) + e, Snackbar.LENGTH_LONG)
+                            .setAction(getResources().getString(R.string.error), null).show();
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onDismissed() {
+                super.onDismissed();
+                Snackbar.make(view, R.string.confirmation_dismissed, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.dismissed, null).show();
+            }
+
+            @Override
+            public void onCanceled() {
+                super.onCanceled();
+                Snackbar.make(view, R.string.confirmation_cancelled, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.cancelled, null).show();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                Log.e(TAG, "Error on Confirmation: " + e.toString());
+                Snackbar.make(view, getResources().getString(R.string.authentication_error) + e, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.error, null).show();
+            }
+        };
+    }
+
+    /**
+     * Creates a biometric prompt authentication callback with the given view and extra data
+     *
+     * @param view      the view to show the result messages
+     * @param dataThatWasConfirmed the extra data which was APC confirmed
+     * @return the confirmation callback
+     */
+    private BiometricPrompt.AuthenticationCallback createBiometricPromptAuthCallback(View view, byte[] dataThatWasConfirmed) {
+        return new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode,
+                                              CharSequence errString) {
+                notifyUser(getResources().getString(R.string.authentication_error) + errString);
+                super.onAuthenticationError(errorCode, errString);
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                Log.i(TAG, "onAuthenticationSucceeded");
+                super.onAuthenticationSucceeded(result);
+                if (result.getCryptoObject() != null &&
+                        result.getCryptoObject().getSignature() != null) {
+                    try {
+                        Signature signature = result.getCryptoObject().getSignature();
+                        signature.update(dataThatWasConfirmed);
+                        byte[] signatureBytes = signature.sign();
+                        processSignature(view, dataThatWasConfirmed, signatureBytes);
+                    } catch (SignatureException e) {
+                        //throw new RuntimeException();
+                        Log.e(TAG, String.format("Signature exception: %s", e));
+                        Snackbar.make(view, getResources().getString(R.string.signing_failed) + e, Snackbar.LENGTH_LONG)
+                                .setAction(getResources().getString(R.string.error), null).show();
+                    }
+                } else {
+                    // Error
+                    Log.e(TAG, "Failed to get result.");
+                }
+            }
+        };
+    }
+
     private KeyPair getKeyPair(String keyName) throws Exception {
         KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
         keyStore.load(null);
@@ -288,7 +311,7 @@ public class ApcTestFragment extends Fragment {
     }
 
     /**
-     * This method takes the "confirmed message" and the ras signature and gernerates a PKCS7 signed message which contains the full certificate chain.
+     * This method takes the "confirmed message" and the signature and generates a PKCS7 signed message which contains the full certificate chain.
      * @param view
      * @param dataThatWasConfirmed the confirmed message
      * @param signatureBytes the raw signature
@@ -320,10 +343,6 @@ public class ApcTestFragment extends Fragment {
             });
         }
         sb.show();
-        //Navigate back
-        // go  back
-        //NavHostFragment.findNavController(ApcTestFragment.this)
-        //        .navigate(R.id.action_HpcFragment);
     }
 
     private Signature initSignature(String keyName) throws Exception {

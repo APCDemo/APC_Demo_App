@@ -344,7 +344,7 @@ public class ScreenSlideFragment extends Fragment {
     }
 
     /**
-     * This method takes the "confirmed message" and the ras signature and gernerates a PKCS7 signed message which contains the full certificate chain.
+     * This method takes the "confirmed message" and the signature and generates a PKCS7 signed message which contains the full certificate chain.
      *
      * @param view
      * @param dataThatWasConfirmed the confirmed message
