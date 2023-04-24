@@ -37,6 +37,26 @@ public class CertificateParser {
         return certificate.getPublicKey().getAlgorithm();
     }
 
+    /** Returns the key length of an EC key used by the given certificate.
+     * If the key length cannot be determined, the empty string is returned.
+     * @param certificate
+     * @return String with key length in bits
+     */
+    public static String getEcKeyLength(Certificate certificate){
+        String algorithm = getKeyType(certificate);
+        if (!algorithm.contains("EC")){
+            return "";
+        }
+        ECPublicKey ecPublicKey = (ECPublicKey) certificate.getPublicKey();
+        int pubKeySize = ecPublicKey.getParams().getCurve().getField().getFieldSize();
+        return String.format("%d bits", pubKeySize);
+    }
+
+    /** Returns the name of the elliptic curve used by the given certificate.
+     *  If the curve name cannot be determined, the empty string is returned.
+     *  @param certificate the certificate to be analyzed
+     *  @return the name of the elliptic curve used by the given certificate
+     */
     public static String getEcType(Certificate certificate){
         String algorithm = getKeyType(certificate);
         if (!algorithm.contains("EC")){
@@ -55,6 +75,11 @@ public class CertificateParser {
         return algorithm;
     }
 
+    /** Returns the length of the RSA key used by the given certificate.
+     *  If the key length cannot be determined, the empty string is returned.
+     *  @param certificate the certificate to be analyzed
+     *  @return the length of the RSA key used by the given certificate
+     */
     public static String getRsaKeyLength(Certificate certificate){
         String algorithm = getKeyType(certificate);
         if (!algorithm.contains("RSA")){
@@ -65,6 +90,11 @@ public class CertificateParser {
         return String.format("%d bits", pubKeySize);
     }
 
+    /** Returns the attestation extension of the given certificate.
+     *  If the attestation extension cannot be determined, null is returned.
+     *  @param certificate the certificate to be analyzed
+     *  @return the attestation extension of the given certificate
+     */
     public static ParsedAttestationRecord getAttestationExtension(Certificate certificate){
         ParsedAttestationRecord parsedAttestationRecord = null;
         try {
@@ -85,6 +115,10 @@ public class CertificateParser {
         return parsedAttestationRecord.teeEnforced;
     }
 
+    /** Checks if the given certificate requires authentication from the attestation extension .
+     *  @param certificate the certificate to be analyzed
+     *  @return true if the certificate requires authentication, false otherwise
+     */
     public static boolean requiresAuthentication(Certificate certificate){
         ParsedAttestationRecord parsedAttestationRecord = null;
         try {
@@ -96,13 +130,17 @@ public class CertificateParser {
         return !teeEnforced.noAuthRequired;
     }
 
+    /** Returns the key usage of the given certificate.
+     *  If the key usage cannot be determined, the empty string is returned.
+     *  @param certificate the certificate to be analyzed
+     *  @return the key usage of the given certificate
+     *
+     * KeyUsage::= BIT STRING { digitalSignature (0), nonRepudiation (1),
+     * keyEncipherment (2), dataEncipherment (3), keyAgreement (4),
+     * keyCertSign (5), cRLSign (6), encipherOnly (7), decipherOnly (8) }
+     */
     public static String getKeyUsageString(X509Certificate certificate){
-        // Extract the key usage
-        /*
-         * KeyUsage::= BIT STRING { digitalSignature (0), nonRepudiation (1),
-         * keyEncipherment (2), dataEncipherment (3), keyAgreement (4),
-         * keyCertSign (5), cRLSign (6), encipherOnly (7), decipherOnly (8) }
-         */
+
         boolean[] keyUsageFlags = certificate.getKeyUsage();
         ArrayList<String> keyUsage = new ArrayList<>();
         if (keyUsageFlags != null) {
@@ -137,6 +175,10 @@ public class CertificateParser {
         return join(keyUsage);
     }
 
+    /** Simple helper function to concatenate a list of key usage strings.
+     *  @param arrayList the list of strings to be concatenated
+     *  @return the concatenated string
+     */
     public static String join(ArrayList<String> arrayList){
         StringBuilder out=new StringBuilder();
         for (String str: arrayList) {

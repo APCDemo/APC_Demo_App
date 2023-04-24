@@ -59,6 +59,11 @@ public class SharedData extends ViewModel {
         return this.questions;
     }
 
+    /**
+     * Load questions from JSON file with fallback to local resource
+     * @param json
+     * @param context
+     */
     public void setQuestions(String json, Context context) {
         if (json != null) {
             try {
@@ -74,6 +79,10 @@ public class SharedData extends ViewModel {
         }
     }
 
+    /**
+     * Load questions from local resource
+     * @param context
+     */
     public void setQuestionsFromLocal(Context context){
         if (questions.size()<=0) {  // load only if we don't have any data
             Log.d(TAG, "Loading questions from local JSON file.");

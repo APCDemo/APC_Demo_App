@@ -37,6 +37,13 @@ import java.util.List;
 public class PKCS7Builder {
     static public final String TAG = PKCS7Builder.class.getName();
 
+    /**
+     * Generates a PKCS7 signature including the certificate chain
+     * @param dataToSign
+     * @param signature
+     * @param signatureAlgorithm
+     * @return
+     */
     public static byte[] generatePkcs7(byte[] dataToSign, byte[] signature, String signatureAlgorithm){
 
         try {
@@ -66,6 +73,11 @@ public class PKCS7Builder {
         return new byte[] {};
     }
 
+    /**
+     * Generates a PEM encoded PKCS7 signature
+     * @param pkcs7
+     * @return
+     */
     public static String generatePkcs7Pem(byte[] pkcs7){
         StringBuffer sb = new StringBuffer();
         try{

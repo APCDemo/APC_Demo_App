@@ -297,12 +297,20 @@ public class CheckKeyFragment extends Fragment {
         }
     }
 
+    /**
+     * Checks if the byte array is printable
+     * @param data
+     * @return
+     */
     public static boolean isPrintable(byte[] data){
         for (byte b : data)
             if ( b < 32 ) return false;
         return true;
     }
 
+    /**
+     * Writes the certificate information to the UI and generates a log file
+     */
     public void populate(String certName, Certificate[] certChain) {
         log = new StringBuffer();
 
@@ -412,6 +420,9 @@ public class CheckKeyFragment extends Fragment {
         return buf.toString();
     }
 
+    /**
+     * Returns the PEM encoded APC certificate.
+     */
     public static String getCertPem(){
         StringBuilder sb = new StringBuilder();
         try{

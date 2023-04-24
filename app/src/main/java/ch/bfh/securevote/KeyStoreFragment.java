@@ -83,11 +83,7 @@ public class KeyStoreFragment extends Fragment {
     protected void addAliases(String alias, Certificate cert){
         SingleKeyLayout entry = new SingleKeyLayout(getContext());
         binding.layoutKeys.addView(entry);
-
-
         entry.labelTextView.setText(alias);
-
-
         String keyType=CertificateParser.getKeyType(cert);
         entry.keyTypeView.setText(keyType);
         if (keyType.contains("RSA")){
@@ -115,7 +111,7 @@ public class KeyStoreFragment extends Fragment {
             HpcUtility.deleteKey(alias);
             entry.removeButton.setEnabled(false);
 
-            // go  back
+            // go back
             NavHostFragment.findNavController(KeyStoreFragment.this)
                     .navigate(R.id.action_HpcFragment);
         });

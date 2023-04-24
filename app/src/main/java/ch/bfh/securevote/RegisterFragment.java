@@ -197,6 +197,10 @@ public class RegisterFragment extends Fragment {
 
     }
 
+    /**
+     * Setup the key selection based on the key type. APC supports EC or RSA key pairs.
+     * @param type
+     */
     protected void setupKeySelection(String type){
         if (type.contains("EC")){
             binding.labelSelection.setText(R.string.select_ec_type);
@@ -223,6 +227,10 @@ public class RegisterFragment extends Fragment {
         binding = null;
     }
 
+    /**
+     * Set the challenge to the textview. This challenge is used for the APC key.
+     * @param uuid
+     */
     protected void setChallenge(String uuid){
         String challenge = null;
         if (uuid != null){
