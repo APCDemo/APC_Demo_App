@@ -18,6 +18,7 @@ The following devices have been tested successfully:
  * Pixel 6a
  * Pixel 6 Pro
  * Pixel 7
+ * Pixel 7 Pro
 
 
 You will find real-time statistics of all participating devices [on our web site](https://apc.ti.bfh.ch/stats/model_stats.html).
