@@ -48,7 +48,6 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -92,15 +91,12 @@ public class CheckKeyFragment extends Fragment {
             Log.e(TAG, "Error getting certificate chain: " + ex);
             binding.sectionLabel.append(getResources().getString(R.string.no_key_found));
         }
-        binding.buttonCopy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText(Constants.KEY_NAME, log.toString() + "\n" + getCertPem());
-                clipboard.setPrimaryClip(clip);
-                Snackbar.make(view, R.string.copied, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.copy, null).show();
-            }
+        binding.buttonCopy.setOnClickListener(view1 -> {
+            ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText(Constants.KEY_NAME, log.toString() + "\n" + getCertPem());
+            clipboard.setPrimaryClip(clip);
+            Snackbar.make(view1, R.string.copied, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.copy, null).show();
         });
     }
 
@@ -144,8 +140,8 @@ public class CheckKeyFragment extends Fragment {
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         tvLabel.setPadding(10 + indent, 10, 0, 0);
         if (critical) {
-            tvLabel.setBackgroundColor(getResources().getColor(R.color.dark_red));
-            tvLabel.setTextColor(getResources().getColor(R.color.bfh_orange));
+            tvLabel.setBackgroundColor(getContext().getColor(R.color.medium_red));
+            tvLabel.setTextColor(getContext().getColor(R.color.bfh_orange));
         }
         tvLabel.setText(label);
         trl.addView(tvLabel, new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
@@ -159,8 +155,8 @@ public class CheckKeyFragment extends Fragment {
         final TableRow trv = new TableRow(getActivity());
         final TextView tvValue = new TextView(getActivity());
         tvValue.setPadding(20 + indent, 0, 20, 0);
-        tvValue.setTextColor(ContextCompat.getColor(getContext(),R.color.bfh_orange));
-        if (critical) tvValue.setBackgroundColor(getResources().getColor(R.color.dark_red));
+        tvValue.setTextColor(getContext().getColor(R.color.bfh_orange));
+        if (critical) tvValue.setBackgroundColor(getContext().getColor(R.color.medium_red));
         tvValue.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1f));
         trv.addView(tvValue, new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
                 TableRow.LayoutParams.WRAP_CONTENT, 1f));

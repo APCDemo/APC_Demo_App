@@ -130,6 +130,21 @@ public class CertificateParser {
         return !teeEnforced.noAuthRequired;
     }
 
+    /** Checks if the given certificate requires protected confirmation from the attestation extension.
+     * @param certificate
+     * @return true if the certificate requires protected confirmation, false otherwise
+     */
+    public static boolean requiresProtectedConfirmation(Certificate certificate){
+        ParsedAttestationRecord parsedAttestationRecord = null;
+        try {
+            parsedAttestationRecord = createParsedAttestationRecord((X509Certificate) certificate);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        AuthorizationList teeEnforced = parsedAttestationRecord.teeEnforced;
+        return teeEnforced.trustedConfirmationRequired;
+    }
+
     /** Returns the key usage of the given certificate.
      *  If the key usage cannot be determined, the empty string is returned.
      *  @param certificate the certificate to be analyzed
