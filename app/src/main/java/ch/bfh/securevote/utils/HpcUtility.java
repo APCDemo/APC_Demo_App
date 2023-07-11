@@ -143,7 +143,7 @@ public class HpcUtility {
                     .setUserConfirmationRequired(userConfirmationRequired)
                     .setUserAuthenticationRequired(userAuthenticationRequired)
                     //.setUserPresenceRequired(userPresenceRequired)  // conflicting ... do not use
-                    .setDevicePropertiesAttestationIncluded(true)   // requires API 31 (Android 12)
+                    //.setDevicePropertiesAttestationIncluded(true)   // requires API 31 (Android 12) Note: Prevents key generation if device is unlocked
                     //.setMaxUsageCount(max_usage)  //could be set to limit the number of key usages
                     .setAttestationChallenge(challenge);
             try {
