@@ -101,7 +101,11 @@ public class HpcUtility {
         Date startDate = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(startDate);
-        c.add(Calendar.YEAR, years);
+        if (years > 0) {
+            c.add(Calendar.YEAR, years);
+        }else{
+            c.add(Calendar.HOUR, 24);
+        }
         Date endDate = c.getTime();
 
         //Key Name

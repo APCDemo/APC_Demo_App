@@ -3,14 +3,14 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "ch.bfh.securevote"
         minSdk 31
-        targetSdk 31
-        versionCode 17
-        versionName "0.37"
+        targetSdk 33
+        versionCode 20
+        versionName "0.40"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
